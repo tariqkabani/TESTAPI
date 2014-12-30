@@ -1,0 +1,437 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="SupportModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ApplicantsTypes">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Applicant" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="People">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="SecondName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ThirdName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="FamilyName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Mobile" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="EMail" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ApplicantsTypeID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="TicketDetails">
+          <Key>
+            <PropertyRef Name="TicketDetailsID" />
+          </Key>
+          <Property Name="TicketDetailsID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TicketDetailsDate" Type="datetime" Nullable="false" />
+          <Property Name="TicketMessage" Type="varchar(max)" Nullable="false" />
+          <Property Name="TicketID" Type="int" Nullable="false" />
+          <Property Name="DepartmentsID" Type="int" Nullable="false" />
+          <Property Name="EditID" Type="int" Nullable="false" />
+          <Property Name="TicketStatusTicketDetailsID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tickets">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Subject" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Message" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Date" Type="date" Nullable="false" />
+          <Property Name="TicketTypeTickeTypeId" Type="int" Nullable="false" />
+          <Property Name="PersonID" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TicketStatus">
+          <Key>
+            <PropertyRef Name="TicketStatusId" />
+          </Key>
+          <Property Name="TicketStatusId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Status" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TicketTypes">
+          <Key>
+            <PropertyRef Name="TickeTypeId" />
+          </Key>
+          <Property Name="TickeTypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TickeType" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_ApplicantsTypePerson">
+          <End Role="ApplicantsTypes" Type="Self.ApplicantsTypes" Multiplicity="1" />
+          <End Role="People" Type="Self.People" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ApplicantsTypes">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="People">
+              <PropertyRef Name="ApplicantsTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PersonTicket">
+          <End Role="People" Type="Self.People" Multiplicity="1" />
+          <End Role="Tickets" Type="Self.Tickets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="People">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Tickets">
+              <PropertyRef Name="PersonID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TicketDetails_Tickets">
+          <End Role="Tickets" Type="Self.Tickets" Multiplicity="1" />
+          <End Role="TicketDetails" Type="Self.TicketDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tickets">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TicketDetails">
+              <PropertyRef Name="TicketID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TicketDetails_TicketStatus">
+          <End Role="TicketStatus" Type="Self.TicketStatus" Multiplicity="1" />
+          <End Role="TicketDetails" Type="Self.TicketDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TicketStatus">
+              <PropertyRef Name="TicketStatusId" />
+            </Principal>
+            <Dependent Role="TicketDetails">
+              <PropertyRef Name="TicketStatusTicketDetailsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TicketTypeTicket">
+          <End Role="TicketTypes" Type="Self.TicketTypes" Multiplicity="1" />
+          <End Role="Tickets" Type="Self.Tickets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TicketTypes">
+              <PropertyRef Name="TickeTypeId" />
+            </Principal>
+            <Dependent Role="Tickets">
+              <PropertyRef Name="TicketTypeTickeTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SupportModelStoreContainer">
+          <EntitySet Name="ApplicantsTypes" EntityType="Self.ApplicantsTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="People" EntityType="Self.People" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TicketDetails" EntityType="Self.TicketDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tickets" EntityType="Self.Tickets" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TicketStatus" EntityType="Self.TicketStatus" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TicketTypes" EntityType="Self.TicketTypes" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ApplicantsTypePerson" Association="Self.FK_ApplicantsTypePerson">
+            <End Role="ApplicantsTypes" EntitySet="ApplicantsTypes" />
+            <End Role="People" EntitySet="People" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersonTicket" Association="Self.FK_PersonTicket">
+            <End Role="People" EntitySet="People" />
+            <End Role="Tickets" EntitySet="Tickets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TicketDetails_Tickets" Association="Self.FK_TicketDetails_Tickets">
+            <End Role="Tickets" EntitySet="Tickets" />
+            <End Role="TicketDetails" EntitySet="TicketDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TicketDetails_TicketStatus" Association="Self.FK_TicketDetails_TicketStatus">
+            <End Role="TicketStatus" EntitySet="TicketStatus" />
+            <End Role="TicketDetails" EntitySet="TicketDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TicketTypeTicket" Association="Self.FK_TicketTypeTicket">
+            <End Role="TicketTypes" EntitySet="TicketTypes" />
+            <End Role="Tickets" EntitySet="Tickets" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SupportModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Men">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SecondName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ThirdName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FamilyName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EMail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ApplicantsTypeID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ApplicantsType" Relationship="SupportModel.FK_ApplicantsTypePerson" FromRole="Men" ToRole="ApplicantsType" />
+          <NavigationProperty Name="Tickets" Relationship="SupportModel.FK_PersonTicket" FromRole="Men" ToRole="Ticket" />
+        </EntityType>
+        <EntityContainer Name="SupportEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Men" EntityType="SupportModel.Men" />
+          <EntitySet Name="ApplicantsTypes" EntityType="SupportModel.ApplicantsType" />
+          <EntitySet Name="sysdiagrams" EntityType="SupportModel.sysdiagram" />
+          <EntitySet Name="TicketDetails" EntityType="SupportModel.TicketDetail" />
+          <EntitySet Name="Tickets" EntityType="SupportModel.Ticket" />
+          <EntitySet Name="TicketStatus" EntityType="SupportModel.TicketStatu" />
+          <EntitySet Name="TicketTypes" EntityType="SupportModel.TicketType" />
+          <AssociationSet Name="FK_ApplicantsTypePerson" Association="SupportModel.FK_ApplicantsTypePerson">
+            <End Role="ApplicantsType" EntitySet="ApplicantsTypes" />
+            <End Role="Men" EntitySet="Men" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersonTicket" Association="SupportModel.FK_PersonTicket">
+            <End Role="Men" EntitySet="Men" />
+            <End Role="Ticket" EntitySet="Tickets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TicketDetails_Tickets" Association="SupportModel.FK_TicketDetails_Tickets">
+            <End Role="Ticket" EntitySet="Tickets" />
+            <End Role="TicketDetail" EntitySet="TicketDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TicketDetails_TicketStatus" Association="SupportModel.FK_TicketDetails_TicketStatus">
+            <End Role="TicketStatu" EntitySet="TicketStatus" />
+            <End Role="TicketDetail" EntitySet="TicketDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TicketTypeTicket" Association="SupportModel.FK_TicketTypeTicket">
+            <End Role="TicketType" EntitySet="TicketTypes" />
+            <End Role="Ticket" EntitySet="Tickets" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="ApplicantsType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Applicant" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="People" Relationship="SupportModel.FK_ApplicantsTypePerson" FromRole="ApplicantsType" ToRole="Men" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="TicketDetail">
+          <Key>
+            <PropertyRef Name="TicketDetailsID" />
+          </Key>
+          <Property Name="TicketDetailsID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TicketDetailsDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TicketMessage" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="TicketID" Type="Int32" Nullable="false" />
+          <Property Name="DepartmentsID" Type="Int32" Nullable="false" />
+          <Property Name="EditID" Type="Int32" Nullable="false" />
+          <Property Name="TicketStatusTicketDetailsID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Ticket" Relationship="SupportModel.FK_TicketDetails_Tickets" FromRole="TicketDetail" ToRole="Ticket" />
+          <NavigationProperty Name="TicketStatu" Relationship="SupportModel.FK_TicketDetails_TicketStatus" FromRole="TicketDetail" ToRole="TicketStatu" />
+        </EntityType>
+        <EntityType Name="Ticket">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Subject" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Message" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="TicketTypeTickeTypeId" Type="Int32" Nullable="false" />
+          <Property Name="PersonID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Person" Relationship="SupportModel.FK_PersonTicket" FromRole="Ticket" ToRole="Men" />
+          <NavigationProperty Name="TicketDetails" Relationship="SupportModel.FK_TicketDetails_Tickets" FromRole="Ticket" ToRole="TicketDetail" />
+          <NavigationProperty Name="TicketType" Relationship="SupportModel.FK_TicketTypeTicket" FromRole="Ticket" ToRole="TicketType" />
+        </EntityType>
+        <EntityType Name="TicketStatu">
+          <Key>
+            <PropertyRef Name="TicketStatusId" />
+          </Key>
+          <Property Name="TicketStatusId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="TicketDetails" Relationship="SupportModel.FK_TicketDetails_TicketStatus" FromRole="TicketStatu" ToRole="TicketDetail" />
+        </EntityType>
+        <EntityType Name="TicketType">
+          <Key>
+            <PropertyRef Name="TickeTypeId" />
+          </Key>
+          <Property Name="TickeTypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TickeType" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Tickets" Relationship="SupportModel.FK_TicketTypeTicket" FromRole="TicketType" ToRole="Ticket" />
+        </EntityType>
+        <Association Name="FK_ApplicantsTypePerson">
+          <End Type="SupportModel.ApplicantsType" Role="ApplicantsType" Multiplicity="1" />
+          <End Type="SupportModel.Men" Role="Men" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ApplicantsType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Men">
+              <PropertyRef Name="ApplicantsTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PersonTicket">
+          <End Type="SupportModel.Men" Role="Men" Multiplicity="1" />
+          <End Type="SupportModel.Ticket" Role="Ticket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Men">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Ticket">
+              <PropertyRef Name="PersonID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TicketDetails_Tickets">
+          <End Type="SupportModel.Ticket" Role="Ticket" Multiplicity="1" />
+          <End Type="SupportModel.TicketDetail" Role="TicketDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ticket">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TicketDetail">
+              <PropertyRef Name="TicketID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TicketDetails_TicketStatus">
+          <End Type="SupportModel.TicketStatu" Role="TicketStatu" Multiplicity="1" />
+          <End Type="SupportModel.TicketDetail" Role="TicketDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TicketStatu">
+              <PropertyRef Name="TicketStatusId" />
+            </Principal>
+            <Dependent Role="TicketDetail">
+              <PropertyRef Name="TicketStatusTicketDetailsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TicketTypeTicket">
+          <End Type="SupportModel.TicketType" Role="TicketType" Multiplicity="1" />
+          <End Type="SupportModel.Ticket" Role="Ticket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TicketType">
+              <PropertyRef Name="TickeTypeId" />
+            </Principal>
+            <Dependent Role="Ticket">
+              <PropertyRef Name="TicketTypeTickeTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SupportModelStoreContainer" CdmEntityContainer="SupportEntities">
+          <EntitySetMapping Name="Men">
+            <EntityTypeMapping TypeName="SupportModel.Men">
+              <MappingFragment StoreEntitySet="People">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="SecondName" ColumnName="SecondName" />
+                <ScalarProperty Name="ThirdName" ColumnName="ThirdName" />
+                <ScalarProperty Name="FamilyName" ColumnName="FamilyName" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="EMail" ColumnName="EMail" />
+                <ScalarProperty Name="ApplicantsTypeID" ColumnName="ApplicantsTypeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ApplicantsTypes">
+            <EntityTypeMapping TypeName="SupportModel.ApplicantsType">
+              <MappingFragment StoreEntitySet="ApplicantsTypes">
+                <ScalarProperty Name="Applicant" ColumnName="Applicant" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="SupportModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TicketDetails">
+            <EntityTypeMapping TypeName="SupportModel.TicketDetail">
+              <MappingFragment StoreEntitySet="TicketDetails">
+                <ScalarProperty Name="TicketStatusTicketDetailsID" ColumnName="TicketStatusTicketDetailsID" />
+                <ScalarProperty Name="EditID" ColumnName="EditID" />
+                <ScalarProperty Name="DepartmentsID" ColumnName="DepartmentsID" />
+                <ScalarProperty Name="TicketID" ColumnName="TicketID" />
+                <ScalarProperty Name="TicketMessage" ColumnName="TicketMessage" />
+                <ScalarProperty Name="TicketDetailsDate" ColumnName="TicketDetailsDate" />
+                <ScalarProperty Name="TicketDetailsID" ColumnName="TicketDetailsID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tickets">
+            <EntityTypeMapping TypeName="SupportModel.Ticket">
+              <MappingFragment StoreEntitySet="Tickets">
+                <ScalarProperty Name="PersonID" ColumnName="PersonID" />
+                <ScalarProperty Name="TicketTypeTickeTypeId" ColumnName="TicketTypeTickeTypeId" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="Subject" ColumnName="Subject" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TicketStatus">
+            <EntityTypeMapping TypeName="SupportModel.TicketStatu">
+              <MappingFragment StoreEntitySet="TicketStatus">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="TicketStatusId" ColumnName="TicketStatusId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TicketTypes">
+            <EntityTypeMapping TypeName="SupportModel.TicketType">
+              <MappingFragment StoreEntitySet="TicketTypes">
+                <ScalarProperty Name="TickeType" ColumnName="TickeType" />
+                <ScalarProperty Name="TickeTypeId" ColumnName="TickeTypeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

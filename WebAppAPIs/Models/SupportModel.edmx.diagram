@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="7394a4113dc5473e8afdbdfde5f47241" Name="Diagram1">
+        <EntityTypeShape EntityType="SupportModel.Men" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SupportModel.ApplicantsType" Width="1.5" PointX="1.125" PointY="5.5" />
+        <EntityTypeShape EntityType="SupportModel.sysdiagram" Width="1.5" PointX="5.75" PointY="4.875" />
+        <EntityTypeShape EntityType="SupportModel.TicketDetail" Width="1.5" PointX="5.625" PointY="1" />
+        <EntityTypeShape EntityType="SupportModel.Ticket" Width="1.5" PointX="3.375" PointY="1" />
+        <EntityTypeShape EntityType="SupportModel.TicketStatu" Width="1.5" PointX="3.375" PointY="5.5" />
+        <EntityTypeShape EntityType="SupportModel.TicketType" Width="1.5" PointX="1.125" PointY="8.5" />
+        <AssociationConnector Association="SupportModel.FK_ApplicantsTypePerson" />
+        <AssociationConnector Association="SupportModel.FK_PersonTicket" />
+        <AssociationConnector Association="SupportModel.FK_TicketDetails_Tickets" />
+        <AssociationConnector Association="SupportModel.FK_TicketDetails_TicketStatus" />
+        <AssociationConnector Association="SupportModel.FK_TicketTypeTicket" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
